@@ -4,13 +4,10 @@ import axios from 'axios';
 export default function SecondFile() {
 
     const [data, setData] = useState([]);
+    const [result, setResult] = useState(null);
 
-    function getFromDatabase(){
-        return null;
-    }
-
-    function getFromApi(){
-        const url = 'https://api.norsk-tipping.no/LotteryGameInfo/v2/api/results/lotto?fromDate=2022-09-06&toDate=2022-12-21'
+    function getFromApi(startDate, endDate) {
+        const url = 'https://api.norsk-tipping.no/LotteryGameInfo/v2/api/results/lotto?fromDate=' + startDate + '&toDate=' + endDate;
 
         axios(url)
             .then(response => {
@@ -28,7 +25,7 @@ export default function SecondFile() {
     return (
         <div>
             <h1>This is where some sicko data should come</h1>
-            <button onClick={getFromApi}>Get info from API</button>
+            <button onClick={() => getFromApi("2022-09-10", "2022-12-22")}>Get info from API</button>
         </div>
     );
 }
