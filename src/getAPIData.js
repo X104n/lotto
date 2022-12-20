@@ -22,10 +22,30 @@ export default function SecondFile() {
             }).catch(err => console.log("Error"));
     }
 
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+
+    function handleStartChange(event) {
+        setStartDate(event.target.value);
+    }
+
+    function handleEndChange(event) {
+        setEndDate(event.target.value);
+    }
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        getFromApi(startDate, endDate);
+    }
+
     return (
         <div>
-            <h1>This is where some sicko data should come</h1>
-            <button onClick={() => getFromApi("2022-09-10", "2022-12-22")}>Get info from API</button>
+            <h1>Enter start date, then end date. Output will come in the console</h1>
+            <form onSubmit={handleSubmit}>
+                <input type="date" id="startDate" name="startDate" value={startDate} onChange={handleStartChange} />
+                <input type="date" id="endDate" name="endDate" value={endDate} onChange={handleEndChange} />
+                <button type="submit">Submit</button>
+            </form>
         </div>
     );
 }
