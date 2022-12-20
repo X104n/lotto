@@ -1,5 +1,6 @@
 import SecondFile from './getAPIData.js'
 
+
 function App() {
   return (
     <>
