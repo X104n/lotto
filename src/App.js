@@ -1,4 +1,4 @@
-import SecondFile from './getData.js'
+import SecondFile from './getAPIData.js'
 
 function App() {
   return (
