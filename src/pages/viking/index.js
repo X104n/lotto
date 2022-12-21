@@ -1,15 +1,15 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-const About = () => {
+const Viking = () => {
     return (
         <div>
             <h1>
-                This is a webpage about me
+                Viking Lotto
             </h1>
             <Link to="/">Home</Link>
         </div>
     );
 };
 
-export default About;
+export default Viking;
