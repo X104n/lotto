@@ -1,12 +1,23 @@
 import SecondFile from './getAPIData.js'
+import Home from './pages';
+import About from './pages/about';
+import {
+    BrowserRouter as Router, Routes,
+    Route,
+    Link
+} from "react-router-dom";
+
 
 function App() {
-  return (
-    <>
-        <h1>Hello World</h1>
-        <SecondFile />
-    </>
-  )
+    return (
+        <Router>
+        <Routes>
+            <Route exact path='/' exact element={<Home />} />
+            <Route path='/about' element={<About />} />
+        </Routes>
+        </Router>
+    );
+
 }
 
 
