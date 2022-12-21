@@ -1,6 +1,9 @@
 import SecondFile from './getAPIData.js'
 import Home from './pages';
 import About from './pages/about';
+import Lotto from "./pages/lotto/index";
+import Viking from "./pages/viking/index";
+import Euro from "./pages/euro/index";
 import {
     BrowserRouter as Router, Routes,
     Route,
@@ -14,6 +17,9 @@ function App() {
         <Routes>
             <Route exact path='/' exact element={<Home />} />
             <Route path='/about' element={<About />} />
+            <Route path='/lotto/index' element={<Lotto />} />
+            <Route path='/viking/index' element={<Viking />} />
+            <Route path='/euro/index' element={<Euro />} />
         </Routes>
         </Router>
     );
