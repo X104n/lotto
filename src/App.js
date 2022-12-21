@@ -16,10 +16,10 @@ function App() {
         <Router>
         <Routes>
             <Route exact path='/' exact element={<Home />} />
+                <Route path='/lotto/index' element={<Lotto />} />
+                <Route path='/viking/index' element={<Viking />} />
+                <Route path='/euro/index' element={<Euro />} />
             <Route path='/about' element={<About />} />
-            <Route path='/lotto/index' element={<Lotto />} />
-            <Route path='/viking/index' element={<Viking />} />
-            <Route path='/euro/index' element={<Euro />} />
         </Routes>
         </Router>
     );
