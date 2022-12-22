@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-export default function SecondFile() {
+export default function APIData() {
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(Array());
     const [result, setResult] = useState(null);
 
     function getFromApi(startDate, endDate) {
@@ -15,11 +15,12 @@ export default function SecondFile() {
                 for (const outerValue of Object.values(html)) {
                     if (Array.isArray(outerValue)) {
                         for (const innerValue of outerValue) {
-                            console.log(innerValue);
+                            setData(data.push(innerValue));
                         }
                     }
                 }
             }).catch(err => console.log("Error"));
+        console.log(data);
     }
 
     const [startDate, setStartDate] = useState('');
