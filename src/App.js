@@ -4,14 +4,13 @@ import Lotto from "./pages/lotto/index";
 import Viking from "./pages/viking/index";
 import Euro from "./pages/euro/index";
 import {
-    BrowserRouter as Router, Routes,
+    Routes,
     Route
 } from "react-router-dom";
 
 
 function App() {
     return (
-        <Router>
         <Routes>
             <Route exact path='/' exact element={<Home />} />
                 <Route path='/lotto/index' element={<Lotto />} />
@@ -19,7 +18,6 @@ function App() {
                 <Route path='/euro/index' element={<Euro />} />
             <Route path='/about' element={<About />} />
         </Routes>
-        </Router>
     );
 
 }
