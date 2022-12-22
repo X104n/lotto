@@ -1,12 +1,12 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import SecondFile from "../../getAPIData";
+import APIData from "../../getAPIData";
 
 const Lotto = () => {
     return (
         <div>
             <h1>
-                <SecondFile />
+                <APIData />
             </h1>
             <Link to="/">Home</Link>
         </div>

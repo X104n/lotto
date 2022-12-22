@@ -9,6 +9,7 @@ import {
     Route,
     Link
 } from "react-router-dom";
+import APIData from "./getAPIData.js";
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
                 <Route path='/viking/index' element={<Viking />} />
                 <Route path='/euro/index' element={<Euro />} />
             <Route path='/about' element={<About />} />
-            <Route path='/getAPIData' element={<SecondFile />} />
+            <Route path='/getAPIData' element={<APIData />} />
         </Routes>
         </Router>
     );
