@@ -1,10 +1,12 @@
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import {APIData} from "../../getAPIData";
+import {Chart} from "./chart";
 
 const Lotto = () => {
 
     const [content, setContent] = useState(false);
+    const [globalData, setGlobalData] = useState(undefined);
 
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -22,6 +24,7 @@ const Lotto = () => {
         const data = await APIData(startDate, endDate);
         if(data) {
             setContent(true)
+            setGlobalData(data)
         }
     }
 
@@ -33,9 +36,8 @@ const Lotto = () => {
                 <input type="date" id="endDate" name="endDate" value={endDate} onChange={handleEndChange} />
                 <button type="submit">Submit</button>
             </form>
-            <div>
-                {content ? <div text={"1111111"}/> : <div text={"2222222"}/>}
-            </div>
+            {content ? <Chart data={globalData} /> : null}
+            <h1></h1>
             <Link to="/">Home</Link>
         </div>
     );
