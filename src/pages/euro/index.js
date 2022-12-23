@@ -7,7 +7,6 @@ const Euro = () => {
             <h1>
                 Euro Jackpot
             </h1>
-            <Link to="/">Home</Link>
         </div>
     );
 };

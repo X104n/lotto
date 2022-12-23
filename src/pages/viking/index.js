@@ -7,7 +7,6 @@ const Viking = () => {
             <h1>
                 Viking Lotto
             </h1>
-            <Link to="/">Home</Link>
         </div>
     );
 };

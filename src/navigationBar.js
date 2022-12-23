@@ -1,33 +1,57 @@
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
+import React, {useEffect, useRef} from 'react';
 
 function Navbar() {
-return (
+    useEffect(() => {
+        function handleScroll() {
+            let navbar = document.querySelector(".nav ul");
+            if (window.scrollY > 0) {
+                navbar.style.padding = "5px";
+            } else {
+                navbar.style.padding = "20px";
+            }
+        }
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
+    return (
         <nav className="nav">
             <ul>
-                <li>
-                    <Link to="/idk">Hamburger</Link>
-                </li>
-                <li>
-                    <Link to="/">Home</Link>
-                </li>
-                <li>
-                    <Link to="/lotto/index">Lotto</Link>
-                </li>
-                <li>
-                    <Link to="/viking/index">Viking</Link>
-                </li>
-                <li>
-                    <Link to="/euro/index">Euro</Link>
-                </li>
-                <li>
-                    <Link to="/about">About</Link>
-                </li>
-                <li>
-                    <Link to="/login">Login</Link>
+                <li className="ham">
+                    <Link to="/idk">🍔</Link>
                 </li>
             </ul>
+            <ul>
+                <li>
+                    <Link to="/">🏠</Link>
+                </li>
+                <li>
+                    <Link to="/lotto/index">🎰</Link>
+                </li>
+                <li>
+                    <Link to="/viking/index">⚔️</Link>
+                </li>
+                <li>
+                    <Link to="/euro/index">💶</Link>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <Link to="/about">🛈</Link>
+                </li>
+                <li>
+                    <Link to="/login">🔒</Link>
+                </li>
+            </ul>
+
         </nav>
-    );
+    )
+        ;
 }
 
 export default Navbar;

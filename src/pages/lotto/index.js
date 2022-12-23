@@ -30,15 +30,22 @@ const Lotto = () => {
 
     return (
         <div>
-            <h6>Enter start date, then end date. Output will come in the console</h6>
-            <form onSubmit={handleSubmit}>
-                <input type="date" id="startDate" name="startDate" value={startDate} onChange={handleStartChange} />
-                <input type="date" id="endDate" name="endDate" value={endDate} onChange={handleEndChange} />
+            <h1>
+                Lotto
+            </h1>
+            <p>
+                Vanlig lotto som går på Norsk-Tipping. Velg en start dato og en slutt dato så
+                vil det komme en graf som viser antall trekninger av alle tall mellom de to datoene
+                du valgte.
+            </p>
+            <form onSubmit={handleSubmit} className="date">
+                <input type="date" className="startDate" value={startDate} onChange={handleStartChange} />
+                <input type="date" className="endDate" value={endDate} onChange={handleEndChange} />
+                <p></p>
                 <button type="submit">Submit</button>
             </form>
             {content ? <Chart data={globalData} /> : null}
             <h1></h1>
-            <Link to="/">Home</Link>
         </div>
     );
 };

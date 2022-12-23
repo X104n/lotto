@@ -8,6 +8,7 @@ import {
     Route
 } from "react-router-dom";
 import NavBar from "./navigationBar";
+import Login from "./pages/login";
 
 
 
@@ -22,6 +23,7 @@ function App() {
                     <Route path='/viking/index' element={<Viking/>}/>
                     <Route path='/euro/index' element={<Euro/>}/>
                     <Route path='/about' element={<About/>}/>
+                    <Route path='/login' element={<Login/>}/>
                 </Routes>
             </div>
         </>
