@@ -51,7 +51,7 @@ export const Chart = (props) => {
         labels: Array.from({length: 34}, (value, index) => index + 1),
         datasets: [
             {
-                label: "Lotto",
+                label: "Antall",
                 data: countNumbers(gatherNumbers()),
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
