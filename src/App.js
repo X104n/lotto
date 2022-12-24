@@ -1,22 +1,20 @@
+import { Routes, Route } from "react-router-dom";
+
+import NavBar from "./navigationBar";
+
 import Home from './pages';
-import About from './pages/about';
 import Lotto from "./pages/lotto/index";
 import Viking from "./pages/viking/index";
 import Euro from "./pages/euro/index";
-import {
-    Routes,
-    Route
-} from "react-router-dom";
-import NavBar from "./navigationBar";
+
+import About from './pages/about';
 import Login from "./pages/login";
-
-
 
 function App() {
     return (
         <>
             <NavBar />
-            <div className="container">
+            <div>
                 <Routes>
                     <Route exact path='/' exact element={<Home/>}/>
                     <Route path='/lotto/index' element={<Lotto/>}/>
