@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 
 function Navbar() {
     useEffect(() => {
