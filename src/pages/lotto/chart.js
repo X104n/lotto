@@ -19,7 +19,6 @@ ChartJS.register(BarElement,
 export const Chart = (props) => {
 
     const data = props.data;
-    const numbers = [1, 2, 3]
 
     function gatherNumbers() {
         let numbers = [];
@@ -37,7 +36,7 @@ export const Chart = (props) => {
         for (let i = 1; i <= 34; i++) {
             let count = 0;
             for (let j = 0; j < numbers.length; j++) {
-                if (i == numbers[j]) {
+                if (i === numbers[j]) {
                     count++;
                 }
             }

@@ -1,9 +1,8 @@
-import React from 'react';
 import axios from 'axios';
 
 export async function APIData(startDate, endDate) {
 
-    const data = new Array();
+    const data = [];
 
     const url = 'https://api.norsk-tipping.no/LotteryGameInfo/v2/api/results/lotto?fromDate=' + startDate + '&toDate=' + endDate;
 

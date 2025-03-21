@@ -27,10 +27,10 @@ const Lotto = () => {
 
 
             <div className="statButtons">
-                <button onClick={handleButtonClick} value={'chart'} class="button-17" role="button" >Chart(Button 1)</button>
-                <button onClick={handleButtonClick} value="slider" class="button-17" role="button" >Slider(Button 2)</button>
-                <button onClick={handleButtonClick} value="list" class="button-17" role="button" >List(Button 3)</button>
-                <button onClick={handleButtonClick} value="other" class="button-17" role="button" >Some other thing(Button 4)</button>
+                <button onClick={handleButtonClick} value={'chart'} class="button-17" >Chart(Button 1)</button>
+                <button onClick={handleButtonClick} value="slider" class="button-17" >Slider(Button 2)</button>
+                <button onClick={handleButtonClick} value="list" class="button-17" >List(Button 3)</button>
+                <button onClick={handleButtonClick} value="other" class="button-17" >Some other thing(Button 4)</button>
             </div>
 
             <br></br>
