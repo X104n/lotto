@@ -3,7 +3,7 @@ import { APIData, type FetchProgress } from '../../getAPIData';
 import Dashboard from '../../components/lotto/dashboard';
 import type { DrawResult } from '../../types/lotto';
 
-type Interval = '1m' | '3m' | '6m' | '1y' | '3y' | '5y' | '10y' | 'custom';
+type Interval = '1m' | '3m' | '6m' | '1y' | '3y' | '5y' | '10y' | '20y' | 'custom';
 
 const intervals: { value: Interval; label: string }[] = [
   { value: '1m', label: '1 mnd' },
@@ -13,6 +13,7 @@ const intervals: { value: Interval; label: string }[] = [
   { value: '3y', label: '3 år' },
   { value: '5y', label: '5 år' },
   { value: '10y', label: '10 år' },
+  { value: '20y', label: '20 år' },
   { value: 'custom', label: 'Egendefinert' },
 ];
 
@@ -27,6 +28,7 @@ function getDateRange(interval: Interval): { from: string; to: string } {
   else if (interval === '3y') from.setFullYear(from.getFullYear() - 3);
   else if (interval === '5y') from.setFullYear(from.getFullYear() - 5);
   else if (interval === '10y') from.setFullYear(from.getFullYear() - 10);
+  else if (interval === '20y') from.setFullYear(from.getFullYear() - 20);
 
   return {
     from: from.toISOString().split('T')[0],
