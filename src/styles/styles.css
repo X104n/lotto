@@ -81,6 +81,21 @@ p {
   transition: background 0.15s;
 }
 
+.nav-brand {
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--red);
+  letter-spacing: -0.01em;
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius);
+  flex-shrink: 0;
+}
+
+.nav-brand:hover {
+  background-color: var(--red-light);
+}
+
 .nav a:hover {
   background-color: var(--bg);
 }

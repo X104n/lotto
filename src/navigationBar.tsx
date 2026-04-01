@@ -31,6 +31,7 @@ function Navbar() {
 
   return (
     <nav className="nav">
+      <Link href="/" className="nav-brand">Lottostat</Link>
       <ul>
         {navLinks.map(({ href, emoji, label }) => (
           <li key={href}>

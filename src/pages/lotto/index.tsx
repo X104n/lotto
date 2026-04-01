@@ -61,7 +61,14 @@ const Lotto = () => {
     <>
       <div className="card">
         <h1>Lotto 🎰</h1>
-        <p>Velg en periode for å se statistikk over trekningstall.</p>
+        <p>
+          Norsk Tippings ukentlige lotteri. 7 tall trekkes fra 1–34 hver lørdag,
+          pluss ett tilleggstall. Jackpot krever 7 rette — tilleggstallet
+          gir kun premie for «6 + 1 rette» og kan ikke vinne jackpoten alene.
+        </p>
+        <p style={{ margin: 0 }}>
+          Velg en tidsperiode nedenfor for å se trekningstall, premiestatistikk og vinneroversikt.
+        </p>
       </div>
 
       <div className="tab-bar">
@@ -109,7 +116,7 @@ const Lotto = () => {
 
       {!loading && !data && (
         <div className="card">
-          <p style={{ color: 'var(--text-muted)' }}>Velg en periode ovenfor.</p>
+          <p style={{ color: 'var(--text-muted)' }}>Velg en periode ovenfor for å laste inn statistikk.</p>
         </div>
       )}
     </>
