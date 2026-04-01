@@ -17,7 +17,7 @@ export async function APIData(startDate: string, endDate: string): Promise<unkno
         }
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.error('Failed to fetch lotto data:', err));
 
   return data;
 }

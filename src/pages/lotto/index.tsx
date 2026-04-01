@@ -1,52 +1,81 @@
 import { useState } from 'react';
-import ChartButton from '../../components/lotto/chartButton';
-import SliderButton from '../../components/lotto/sliderButton';
-import ListButton from '../../components/lotto/listButton';
-import OtherButton from '../../components/lotto/otherButton';
+import { APIData } from '../../getAPIData';
+import { Chart } from '../../components/lotto/chart';
 
-type ActiveElement = '' | 'chart' | 'slider' | 'list' | 'other';
+type Interval = '1m' | '3m' | '6m' | '1y';
+
+const intervals: { value: Interval; label: string }[] = [
+  { value: '1m', label: '1 mnd' },
+  { value: '3m', label: '3 mnd' },
+  { value: '6m', label: '6 mnd' },
+  { value: '1y', label: '1 år' },
+];
+
+function getDateRange(interval: Interval): { from: string; to: string } {
+  const to = new Date();
+  const from = new Date();
+
+  if (interval === '1m') from.setMonth(from.getMonth() - 1);
+  else if (interval === '3m') from.setMonth(from.getMonth() - 3);
+  else if (interval === '6m') from.setMonth(from.getMonth() - 6);
+  else if (interval === '1y') from.setFullYear(from.getFullYear() - 1);
+
+  return {
+    from: from.toISOString().split('T')[0],
+    to: to.toISOString().split('T')[0],
+  };
+}
 
 const Lotto = () => {
-  const [currentElement, setCurrentElement] = useState<ActiveElement>('');
+  const [activeInterval, setActiveInterval] = useState<Interval | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<unknown[] | undefined>(undefined);
 
-  function handleButtonClick(event: React.MouseEvent<HTMLButtonElement>) {
-    setCurrentElement(event.currentTarget.value as ActiveElement);
+  async function handleIntervalClick(interval: Interval) {
+    setActiveInterval(interval);
+    setLoading(true);
+    const { from, to } = getDateRange(interval);
+    const result = await APIData(from, to);
+    setData(result);
+    setLoading(false);
   }
 
   return (
-    <div>
-      <div className="lotto">
-        <h1>Lotto</h1>
-        <p>
-          Vanlig lotto som går på Norsk-Tipping. Velg en start dato og en slutt dato så vil det
-          komme en graf som viser antall trekninger av alle tall mellom de to datoene du valgte.
-        </p>
+    <>
+      <div className="card">
+        <h1>Lotto 🎰</h1>
+        <p>Velg en periode for å se hvor mange ganger hvert tall er trukket.</p>
       </div>
 
-      <div className="statButtons">
-        <button onClick={handleButtonClick} value="chart" className="button-17">
-          Chart(Button 1)
-        </button>
-        <button onClick={handleButtonClick} value="slider" className="button-17">
-          Slider(Button 2)
-        </button>
-        <button onClick={handleButtonClick} value="list" className="button-17">
-          List(Button 3)
-        </button>
-        <button onClick={handleButtonClick} value="other" className="button-17">
-          Some other thing(Button 4)
-        </button>
+      <div className="tab-bar">
+        {intervals.map(({ value, label }) => (
+          <button
+            key={value}
+            className={`btn-tab${activeInterval === value ? ' active' : ''}`}
+            onClick={() => handleIntervalClick(value)}
+            disabled={loading}
+          >
+            {label}
+          </button>
+        ))}
       </div>
 
-      <br />
+      <div className="card">
+        {loading && <p>Laster...</p>}
 
-      <div className="lottoData">
-        {currentElement === 'chart' && <ChartButton />}
-        {currentElement === 'slider' && <SliderButton />}
-        {currentElement === 'list' && <ListButton />}
-        {currentElement === 'other' && <OtherButton />}
+        {!loading && data && data.length > 0 && (
+          <Chart data={data as Parameters<typeof Chart>[0]['data']} />
+        )}
+
+        {!loading && data && data.length === 0 && (
+          <p>Ingen trekningstall funnet for denne perioden.</p>
+        )}
+
+        {!loading && !data && (
+          <p style={{ color: 'var(--text-muted)' }}>Velg en periode ovenfor.</p>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 
