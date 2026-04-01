@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { APIData } from '../../getAPIData';
+import { APIData, type FetchProgress } from '../../getAPIData';
 import { Chart } from '../../components/lotto/chart';
 
 type Interval = '1m' | '3m' | '6m' | '1y';
@@ -26,19 +26,29 @@ function getDateRange(interval: Interval): { from: string; to: string } {
   };
 }
 
+function formatDate(iso: string): string {
+  const [year, month, day] = iso.split('-');
+  return `${day}.${month}.${year}`;
+}
+
 const Lotto = () => {
   const [activeInterval, setActiveInterval] = useState<Interval | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState<FetchProgress | null>(null);
   const [data, setData] = useState<unknown[] | undefined>(undefined);
 
   async function handleIntervalClick(interval: Interval) {
     setActiveInterval(interval);
-    setLoading(true);
+    setData(undefined);
+    setProgress(null);
+
     const { from, to } = getDateRange(interval);
-    const result = await APIData(from, to);
+    const result = await APIData(from, to, setProgress);
+
     setData(result);
-    setLoading(false);
+    setProgress(null);
   }
+
+  const loading = progress !== null;
 
   return (
     <>
@@ -61,7 +71,25 @@ const Lotto = () => {
       </div>
 
       <div className="card">
-        {loading && <p>Laster...</p>}
+        {loading && progress && (
+          <div className="fetch-progress">
+            <div className="fetch-progress-header">
+              <span className="fetch-progress-label">Henter trekningstall...</span>
+              <span className="fetch-progress-count">
+                {progress.current} av {progress.total}
+              </span>
+            </div>
+            <div className="fetch-progress-bar-track">
+              <div
+                className="fetch-progress-bar-fill"
+                style={{ width: `${(progress.current / progress.total) * 100}%` }}
+              />
+            </div>
+            <div className="fetch-progress-dates">
+              {formatDate(progress.from)} &rarr; {formatDate(progress.to)}
+            </div>
+          </div>
+        )}
 
         {!loading && data && data.length > 0 && (
           <Chart data={data as Parameters<typeof Chart>[0]['data']} />
