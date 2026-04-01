@@ -11,9 +11,7 @@ import type { DrawResult } from '../../types/lotto';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip);
 
-interface ChartProps {
-  data: DrawResult[];
-}
+// ── counting functions ────────────────────────────────────────────────────────
 
 export function countMainNumbers(data: DrawResult[]): number[] {
   const counts = new Array<number>(34).fill(0);
@@ -28,6 +26,32 @@ export function countMainNumbers(data: DrawResult[]): number[] {
   return counts;
 }
 
+export function countBonusNumbers(data: DrawResult[]): number[] {
+  const counts = new Array<number>(34).fill(0);
+  for (const draw of data) {
+    for (const { number, type } of draw.winnerNumber) {
+      if (type === 2) {
+        const n = Number(number);
+        if (n >= 1 && n <= 34) counts[n - 1]++;
+      }
+    }
+  }
+  return counts;
+}
+
+export function countAllNumbers(data: DrawResult[]): number[] {
+  const counts = new Array<number>(34).fill(0);
+  for (const draw of data) {
+    for (const { number } of draw.winnerNumber) {
+      const n = Number(number);
+      if (n >= 1 && n <= 34) counts[n - 1]++;
+    }
+  }
+  return counts;
+}
+
+// ── chart component ───────────────────────────────────────────────────────────
+
 function barColors(counts: number[]): string[] {
   const max = Math.max(...counts);
   const min = Math.min(...counts);
@@ -38,8 +62,12 @@ function barColors(counts: number[]): string[] {
   });
 }
 
-export const Chart = ({ data }: ChartProps) => {
-  const counts = countMainNumbers(data);
+interface FrequencyChartProps {
+  counts: number[];
+  tooltipLabel?: string;
+}
+
+export function FrequencyChart({ counts, tooltipLabel = 'Trukket' }: FrequencyChartProps) {
   const colors = barColors(counts);
 
   const chartData = {
@@ -59,14 +87,14 @@ export const Chart = ({ data }: ChartProps) => {
   const options = {
     responsive: true,
     maintainAspectRatio: true,
-    aspectRatio: 2.5,
+    aspectRatio: 2.2,
     plugins: {
       legend: { display: false },
       tooltip: {
         callbacks: {
           title: (items: TooltipItem<'bar'>[]) => `Tall ${items[0].label}`,
           label: (item: TooltipItem<'bar'>) =>
-            ` Trukket ${item.raw} gang${Number(item.raw) === 1 ? '' : 'er'}`,
+            ` ${tooltipLabel} ${item.raw} gang${Number(item.raw) === 1 ? '' : 'er'}`,
         },
         padding: 10,
         cornerRadius: 6,
@@ -89,6 +117,6 @@ export const Chart = ({ data }: ChartProps) => {
   };
 
   return <Bar data={chartData} options={options} />;
-};
+}
 
-export default Chart;
+export default FrequencyChart;

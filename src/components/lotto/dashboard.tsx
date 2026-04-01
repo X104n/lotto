@@ -1,5 +1,5 @@
-import { Chart, countMainNumbers } from './chart';
-import type { DrawResult, Prize } from '../../types/lotto';
+import { FrequencyChart, countMainNumbers, countBonusNumbers, countAllNumbers } from './chart';
+import type { DrawResult } from '../../types/lotto';
 
 interface Props {
   data: DrawResult[];
@@ -83,6 +83,39 @@ function Summary({ data }: Props) {
   );
 }
 
+// ── section: frequency charts ─────────────────────────────────────────────────
+
+function FrequencyCharts({ data }: Props) {
+  const allCounts = countAllNumbers(data);
+  const mainCounts = countMainNumbers(data);
+  const bonusCounts = countBonusNumbers(data);
+
+  return (
+    <>
+      <div className="card">
+        <SectionTitle>Alle tall (hovedtall + tilleggstall)</SectionTitle>
+        <FrequencyChart counts={allCounts} tooltipLabel="Trukket" />
+      </div>
+      <div className="two-col">
+        <div className="card">
+          <SectionTitle>Hovedtall</SectionTitle>
+          <p style={{ fontSize: '0.8rem', marginBottom: '0.75rem' }}>
+            De 7 tallene som trekkes per runde. Disse brukes til jackpot (7 rette).
+          </p>
+          <FrequencyChart counts={mainCounts} tooltipLabel="Trukket som hovedtall" />
+        </div>
+        <div className="card">
+          <SectionTitle>Tilleggstall</SectionTitle>
+          <p style={{ fontSize: '0.8rem', marginBottom: '0.75rem' }}>
+            1 tall per runde. Gir premie for «6 + 1 rette», men kan ikke vinne jackpot.
+          </p>
+          <FrequencyChart counts={bonusCounts} tooltipLabel="Trukket som tilleggstall" />
+        </div>
+      </div>
+    </>
+  );
+}
+
 // ── section: top & bottom 10 ──────────────────────────────────────────────────
 
 function NumberTable({
@@ -132,61 +165,8 @@ function NumberTables({ data }: Props) {
 
   return (
     <div className="two-col">
-      <NumberTable title="Mest trukne tall" rows={top10} />
-      <NumberTable title="Minst trukne tall" rows={bottom10} />
-    </div>
-  );
-}
-
-// ── section: bonus number ─────────────────────────────────────────────────────
-
-function BonusNumbers({ data }: Props) {
-  const counts = new Array<number>(34).fill(0);
-  for (const draw of data) {
-    for (const { number, type } of draw.winnerNumber) {
-      if (type === 2) {
-        const n = Number(number);
-        if (n >= 1 && n <= 34) counts[n - 1]++;
-      }
-    }
-  }
-
-  const ranked = counts
-    .map((count, i) => ({ number: i + 1, count }))
-    .filter((r) => r.count > 0)
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 10);
-
-  if (ranked.length === 0) return null;
-
-  const maxCount = ranked[0].count;
-
-  return (
-    <div className="card">
-      <SectionTitle>Tilleggstall frekvens</SectionTitle>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        {ranked.map(({ number, count }, i) => (
-          <div key={number} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span style={{ width: '1.5rem', textAlign: 'right', fontWeight: 600, fontSize: '0.9rem' }}>
-              {number}
-            </span>
-            <div style={{ flex: 1, background: 'var(--border)', borderRadius: 99, height: 8, overflow: 'hidden' }}>
-              <div
-                style={{
-                  height: '100%',
-                  width: `${(count / maxCount) * 100}%`,
-                  background: i === 0 ? 'var(--red)' : 'rgba(212,16,64,0.4)',
-                  borderRadius: 99,
-                  transition: 'width 0.4s ease',
-                }}
-              />
-            </div>
-            <span style={{ width: '2rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              {count}×
-            </span>
-          </div>
-        ))}
-      </div>
+      <NumberTable title="Mest trukne hovedtall" rows={top10} />
+      <NumberTable title="Minst trukne hovedtall" rows={bottom10} />
     </div>
   );
 }
@@ -292,19 +272,11 @@ export default function Dashboard({ data }: Props) {
   return (
     <>
       <Summary data={data} />
-
-      <div className="card">
-        <SectionTitle>Tallfrekvens (hovedtall)</SectionTitle>
-        <Chart data={data} />
-      </div>
-
+      <FrequencyCharts data={data} />
       <NumberTables data={data} />
-
       <div className="two-col">
-        <BonusNumbers data={data} />
         <CountyStats data={data} />
       </div>
-
       <PrizeStats data={data} />
     </>
   );
