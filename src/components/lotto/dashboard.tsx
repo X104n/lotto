@@ -47,7 +47,7 @@ function RankBadge({ rank }: { rank: number }) {
 // ── section: summary ─────────────────────────────────────────────────────────
 
 function Summary({ data }: Props) {
-  const counts = countMainNumbers(data);
+  const counts = countAllNumbers(data);
   const max = Math.max(...counts);
   const min = Math.min(...counts);
   const hotNumber = counts.indexOf(max) + 1;
