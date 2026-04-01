@@ -17,7 +17,7 @@ const games = [
     href: '/euro',
     emoji: '💶',
     name: 'Euro Jackpot',
-    description: '5 tall trekkes fra 1–50 + 2 eurotall fra 1–12. Pan-europeisk jackpotlotteri hver tirsdag og fredag.',
+    description: '5 tall trekkes fra 1–50 + 2 stjernetall fra 1–12. Pan-europeisk jackpotlotteri hver tirsdag og fredag.',
   },
 ];
 

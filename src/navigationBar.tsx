@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 const navLinks = [
-  { href: '/', emoji: '🏠', label: 'Hjem' },
   { href: '/lotto', emoji: '🎰', label: 'Lotto' },
   { href: '/viking', emoji: '⚔️', label: 'Viking' },
   { href: '/euro', emoji: '💶', label: 'Euro' },

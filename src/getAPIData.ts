@@ -32,12 +32,14 @@ function chunkDateRange(startDate: string, endDate: string): Array<{ from: strin
 }
 
 export async function APIData(
+  game: string,
   startDate: string,
   endDate: string,
   onProgress?: (progress: FetchProgress) => void
 ): Promise<unknown[]> {
   const chunks = chunkDateRange(startDate, endDate);
   const data: unknown[] = [];
+  const encodedGame = encodeURIComponent(game);
 
   for (let i = 0; i < chunks.length; i++) {
     const { from, to } = chunks[i];
@@ -46,7 +48,7 @@ export async function APIData(
 
     await axios
       .get(
-        `https://api.norsk-tipping.no/LotteryGameInfo/v2/api/results/lotto?fromDate=${from}&toDate=${to}`
+        `https://api.norsk-tipping.no/LotteryGameInfo/v2/api/results/${encodedGame}?fromDate=${from}&toDate=${to}`
       )
       .then((response) => {
         for (const outerValue of Object.values(response.data)) {
@@ -57,7 +59,7 @@ export async function APIData(
           }
         }
       })
-      .catch((err) => console.error('Failed to fetch lotto data:', err));
+      .catch((err) => console.error(`Failed to fetch ${game} data:`, err));
   }
 
   return data;

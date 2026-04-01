@@ -71,7 +71,7 @@ export function FrequencyChart({ counts, tooltipLabel = 'Trukket' }: FrequencyCh
   const colors = barColors(counts);
 
   const chartData = {
-    labels: Array.from({ length: 34 }, (_, i) => i + 1),
+    labels: Array.from({ length: counts.length }, (_, i) => i + 1),
     datasets: [
       {
         data: counts,

@@ -51,7 +51,7 @@ const Lotto = () => {
   async function fetch(from: string, to: string) {
     setData(undefined);
     setProgress(null);
-    const result = await APIData(from, to, setProgress);
+    const result = await APIData('lotto', from, to, setProgress);
     setData(result as DrawResult[]);
     setProgress(null);
   }

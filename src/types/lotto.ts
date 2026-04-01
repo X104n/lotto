@@ -19,11 +19,23 @@ export interface WeekWinnerDetail {
   county: string;
 }
 
+export interface Merchandise {
+  borough: string;
+  gender: string;
+  prizeLevelTypeNo: number;
+  prizeValue: number;
+  andelslagWinner: boolean;
+  spillelagWinner: boolean;
+  syndicateWinner: boolean;
+}
+
 export interface DrawResult {
   drawDate: string;
   drawId: number;
+  gameNo: number;
   prize: Prize[];
   turnover: string;
   weekWinnerDetail: WeekWinnerDetail[];
   winnerNumber: WinnerNumber[];
+  merchandise: Merchandise[];
 }
