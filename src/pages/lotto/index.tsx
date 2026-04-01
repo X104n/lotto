@@ -3,7 +3,7 @@ import { APIData, type FetchProgress } from '../../getAPIData';
 import Dashboard from '../../components/lotto/dashboard';
 import type { DrawResult } from '../../types/lotto';
 
-type Interval = '1m' | '3m' | '6m' | '1y' | '3y' | '5y' | '10y';
+type Interval = '1m' | '3m' | '6m' | '1y' | '3y' | '5y' | '10y' | 'custom';
 
 const intervals: { value: Interval; label: string }[] = [
   { value: '1m', label: '1 mnd' },
@@ -13,6 +13,7 @@ const intervals: { value: Interval; label: string }[] = [
   { value: '3y', label: '3 år' },
   { value: '5y', label: '5 år' },
   { value: '10y', label: '10 år' },
+  { value: 'custom', label: 'Egendefinert' },
 ];
 
 function getDateRange(interval: Interval): { from: string; to: string } {
@@ -42,17 +43,28 @@ const Lotto = () => {
   const [activeInterval, setActiveInterval] = useState<Interval | null>(null);
   const [progress, setProgress] = useState<FetchProgress | null>(null);
   const [data, setData] = useState<DrawResult[] | undefined>(undefined);
+  const [customFrom, setCustomFrom] = useState('');
+  const [customTo, setCustomTo] = useState('');
+
+  async function fetch(from: string, to: string) {
+    setData(undefined);
+    setProgress(null);
+    const result = await APIData(from, to, setProgress);
+    setData(result as DrawResult[]);
+    setProgress(null);
+  }
 
   async function handleIntervalClick(interval: Interval) {
     setActiveInterval(interval);
-    setData(undefined);
-    setProgress(null);
-
+    if (interval === 'custom') return;
     const { from, to } = getDateRange(interval);
-    const result = await APIData(from, to, setProgress);
+    await fetch(from, to);
+  }
 
-    setData(result as DrawResult[]);
-    setProgress(null);
+  async function handleCustomSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!customFrom || !customTo) return;
+    await fetch(customFrom, customTo);
   }
 
   const loading = progress !== null;
@@ -84,6 +96,41 @@ const Lotto = () => {
         ))}
       </div>
 
+      {activeInterval === 'custom' && !loading && (
+        <div className="card">
+          <form onSubmit={handleCustomSubmit}>
+            <div className="form-row">
+              <div className="form-field">
+                <label htmlFor="customFrom">Fra dato</label>
+                <input
+                  id="customFrom"
+                  type="date"
+                  value={customFrom}
+                  max={customTo || undefined}
+                  onChange={(e) => setCustomFrom(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-field">
+                <label htmlFor="customTo">Til dato</label>
+                <input
+                  id="customTo"
+                  type="date"
+                  value={customTo}
+                  min={customFrom || undefined}
+                  max={new Date().toISOString().split('T')[0]}
+                  onChange={(e) => setCustomTo(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" className="btn btn-primary">
+                Vis statistikk
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
       {loading && progress && (
         <div className="card">
           <div className="fetch-progress">
@@ -114,7 +161,7 @@ const Lotto = () => {
         </div>
       )}
 
-      {!loading && !data && (
+      {!loading && !data && activeInterval !== 'custom' && (
         <div className="card">
           <p style={{ color: 'var(--text-muted)' }}>Velg en periode ovenfor for å laste inn statistikk.</p>
         </div>
