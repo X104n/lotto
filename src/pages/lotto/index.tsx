@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { APIData, type FetchProgress } from '../../getAPIData';
-import { Chart } from '../../components/lotto/chart';
+import Dashboard from '../../components/lotto/dashboard';
+import type { DrawResult } from '../../types/lotto';
 
 type Interval = '1m' | '3m' | '6m' | '1y' | '3y' | '5y' | '10y';
 
@@ -40,7 +41,7 @@ function formatDate(iso: string): string {
 const Lotto = () => {
   const [activeInterval, setActiveInterval] = useState<Interval | null>(null);
   const [progress, setProgress] = useState<FetchProgress | null>(null);
-  const [data, setData] = useState<unknown[] | undefined>(undefined);
+  const [data, setData] = useState<DrawResult[] | undefined>(undefined);
 
   async function handleIntervalClick(interval: Interval) {
     setActiveInterval(interval);
@@ -50,7 +51,7 @@ const Lotto = () => {
     const { from, to } = getDateRange(interval);
     const result = await APIData(from, to, setProgress);
 
-    setData(result);
+    setData(result as DrawResult[]);
     setProgress(null);
   }
 
@@ -60,7 +61,7 @@ const Lotto = () => {
     <>
       <div className="card">
         <h1>Lotto 🎰</h1>
-        <p>Velg en periode for å se hvor mange ganger hvert tall er trukket.</p>
+        <p>Velg en periode for å se statistikk over trekningstall.</p>
       </div>
 
       <div className="tab-bar">
@@ -76,8 +77,8 @@ const Lotto = () => {
         ))}
       </div>
 
-      <div className="card">
-        {loading && progress && (
+      {loading && progress && (
+        <div className="card">
           <div className="fetch-progress">
             <div className="fetch-progress-header">
               <span className="fetch-progress-label">Henter trekningstall...</span>
@@ -95,20 +96,22 @@ const Lotto = () => {
               {formatDate(progress.from)} &rarr; {formatDate(progress.to)}
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {!loading && data && data.length > 0 && (
-          <Chart data={data as Parameters<typeof Chart>[0]['data']} />
-        )}
+      {!loading && data && data.length > 0 && <Dashboard data={data} />}
 
-        {!loading && data && data.length === 0 && (
+      {!loading && data && data.length === 0 && (
+        <div className="card">
           <p>Ingen trekningstall funnet for denne perioden.</p>
-        )}
+        </div>
+      )}
 
-        {!loading && !data && (
+      {!loading && !data && (
+        <div className="card">
           <p style={{ color: 'var(--text-muted)' }}>Velg en periode ovenfor.</p>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 };
