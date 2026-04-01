@@ -3,7 +3,7 @@ import axios from 'axios';
 export async function APIData(startDate: string, endDate: string): Promise<unknown[]> {
   const data: unknown[] = [];
 
-  const url = `/api/lotto?fromDate=${startDate}&toDate=${endDate}`;
+  const url = `https://api.norsk-tipping.no/LotteryGameInfo/v2/api/results/lotto?fromDate=${startDate}&toDate=${endDate}`;
 
   await axios
     .get(url)
