@@ -2,13 +2,16 @@ import { useState } from 'react';
 import { APIData, type FetchProgress } from '../../getAPIData';
 import { Chart } from '../../components/lotto/chart';
 
-type Interval = '1m' | '3m' | '6m' | '1y';
+type Interval = '1m' | '3m' | '6m' | '1y' | '3y' | '5y' | '10y';
 
 const intervals: { value: Interval; label: string }[] = [
   { value: '1m', label: '1 mnd' },
   { value: '3m', label: '3 mnd' },
   { value: '6m', label: '6 mnd' },
   { value: '1y', label: '1 år' },
+  { value: '3y', label: '3 år' },
+  { value: '5y', label: '5 år' },
+  { value: '10y', label: '10 år' },
 ];
 
 function getDateRange(interval: Interval): { from: string; to: string } {
@@ -19,6 +22,9 @@ function getDateRange(interval: Interval): { from: string; to: string } {
   else if (interval === '3m') from.setMonth(from.getMonth() - 3);
   else if (interval === '6m') from.setMonth(from.getMonth() - 6);
   else if (interval === '1y') from.setFullYear(from.getFullYear() - 1);
+  else if (interval === '3y') from.setFullYear(from.getFullYear() - 3);
+  else if (interval === '5y') from.setFullYear(from.getFullYear() - 5);
+  else if (interval === '10y') from.setFullYear(from.getFullYear() - 10);
 
   return {
     from: from.toISOString().split('T')[0],
