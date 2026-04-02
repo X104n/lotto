@@ -2,7 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
-  basePath: '/lotto',
   trailingSlash: true,
   images: { unoptimized: true },
 };

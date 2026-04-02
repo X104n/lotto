@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { APIData, type FetchProgress } from '../../getAPIData';
 import Dashboard from '../../components/lotto/dashboard';

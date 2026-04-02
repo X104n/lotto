@@ -1,6 +1,8 @@
+'use client';
+
 import { useState } from 'react';
 import { APIData, type FetchProgress } from '../../getAPIData';
-import Dashboard from '../../components/viking/dashboard';
+import Dashboard from '../../components/euro/dashboard';
 import type { DrawResult } from '../../types/lotto';
 
 type Interval = '1m' | '3m' | '6m' | '1y' | '3y' | '5y' | '10y' | '20y' | 'custom';
@@ -41,7 +43,7 @@ function formatDate(iso: string): string {
   return `${day}.${month}.${year}`;
 }
 
-const Viking = () => {
+const Euro = () => {
   const [activeInterval, setActiveInterval] = useState<Interval | null>(null);
   const [progress, setProgress] = useState<FetchProgress | null>(null);
   const [data, setData] = useState<DrawResult[] | undefined>(undefined);
@@ -51,7 +53,7 @@ const Viking = () => {
   async function fetch(from: string, to: string) {
     setData(undefined);
     setProgress(null);
-    const result = await APIData('vikinglotto', from, to, setProgress);
+    const result = await APIData('eurojackpot all', from, to, setProgress);
     setData(result as DrawResult[]);
     setProgress(null);
   }
@@ -74,15 +76,15 @@ const Viking = () => {
   return (
     <>
       <div className="card">
-        <h1>Viking Lotto ⚔️</h1>
+        <h1>Euro Jackpot 💶</h1>
         <p>
-          Nordisk-baltisk lotteri som trekkes hver onsdag. 6 tall trekkes fra 1–48,
-          pluss ett vikingtall fra 1–5. Jackpot krever 6 rette + riktig vikingtall.
+          Pan-europeisk lotteri med trekning hver tirsdag og fredag. 5 tall trekkes fra 1–50,
+          pluss 2 stjernetall fra 1–12. Jackpot krever 5 rette + 2 riktige stjernetall.
         </p>
         <p style={{ margin: 0 }}>
-          Spilles i ni land: Norge, Sverige, Danmark, Finland, Island, Estland,
-          Latvia, Litauen og Kroatia. Premiepoolen deles på tvers av alle land.
-          Velg en tidsperiode nedenfor for å se trekningstall og statistikk.
+          Spilles i over 18 europeiske land. Jackpoten starter på 10 millioner euro og
+          kan rulle opp til maks 120 millioner euro. Statistikken viser norske omsetnings- og vinnertall.
+          Velg en tidsperiode nedenfor for å laste inn data.
         </p>
       </div>
 
@@ -104,9 +106,9 @@ const Viking = () => {
           <form onSubmit={handleCustomSubmit}>
             <div className="form-row">
               <div className="form-field">
-                <label htmlFor="vklFrom">Fra dato</label>
+                <label htmlFor="ejFrom">Fra dato</label>
                 <input
-                  id="vklFrom"
+                  id="ejFrom"
                   type="date"
                   value={customFrom}
                   max={customTo || undefined}
@@ -115,9 +117,9 @@ const Viking = () => {
                 />
               </div>
               <div className="form-field">
-                <label htmlFor="vklTo">Til dato</label>
+                <label htmlFor="ejTo">Til dato</label>
                 <input
-                  id="vklTo"
+                  id="ejTo"
                   type="date"
                   value={customTo}
                   min={customFrom || undefined}
@@ -173,4 +175,4 @@ const Viking = () => {
   );
 };
 
-export default Viking;
+export default Euro;
