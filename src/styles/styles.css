@@ -471,7 +471,314 @@ html.dark body {
 
 /* === Themes === */
 
-/* Lotto: red (matches :root defaults) */
+/* === Sport tabs === */
+.sport-tabs-wrapper {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.sport-tabs-wrapper::-webkit-scrollbar { display: none; }
+
+.sport-tabs {
+  display: flex;
+  gap: 0.5rem;
+  width: max-content;
+  min-width: 100%;
+}
+
+.sport-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--white);
+  color: var(--text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.sport-tab:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.sport-tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+/* === Day tabs === */
+.day-tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.day-tabs::-webkit-scrollbar { display: none; }
+
+.day-tab {
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.day-tab:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.day-tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+/* === Tournament header === */
+.tournament-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.5rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+/* === Event row === */
+.event-row {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.event-row:hover,
+.event-row.expanded {
+  background: var(--bg);
+}
+
+.event-row.last {
+  border-bottom: none;
+}
+
+.event-time {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  min-width: 4rem;
+  flex-shrink: 0;
+}
+
+.event-teams {
+  flex: 1;
+  min-width: 0;
+}
+
+.event-team {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-team.away {
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-top: 0.1rem;
+}
+
+.live-score {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 3rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* === Odds buttons === */
+.odds-row {
+  display: flex;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.odds-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 3.2rem;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  transition: border-color 0.15s;
+}
+
+.event-row:hover .odds-btn {
+  border-color: var(--accent);
+}
+
+.odds-label {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.odds-value {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.event-chevron {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* === Markets panel === */
+.markets-panel {
+  padding: 1rem 1.5rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.markets-panel.last {
+  border-bottom: none;
+}
+
+.markets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 0.75rem;
+}
+
+.market-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  box-shadow: var(--shadow);
+}
+
+.market-name {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.market-selections {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.selection-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 2.5rem;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.selection-name {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 4.5rem;
+}
+
+.selection-odds {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* === Live badge === */
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #ef4444;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: white;
+  flex-shrink: 0;
+  animation: livePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* === Live count pill === */
+.live-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ef4444;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 99px;
+  padding: 0 0.3rem;
+  margin-left: 0.3rem;
+}
+
+/* === Lotto: red (matches :root defaults) */
 .theme-lotto {
   --accent: #d41040;
   --accent-dark: #a50d30;
@@ -485,6 +792,14 @@ html.dark body {
   --accent-dark: #1354a8;
   --accent-light: #e0edfc;
   --accent-rgb: 26, 111, 212;
+}
+
+/* Oddsen: green */
+.theme-oddsen {
+  --accent: #16a34a;
+  --accent-dark: #15803d;
+  --accent-light: #dcfce7;
+  --accent-rgb: 22, 163, 74;
 }
 
 /* Euro Jackpot: dark with gold */

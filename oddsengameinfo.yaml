@@ -1,0 +1,477 @@
+openapi: 3.0.1
+x-stoplight:
+  id: it3wg4qd4neld
+info:
+  version: 1.13.1
+  title: OddsenGameInfov1
+  description: |-
+    ![oddsen-full-color@3x.png](../assets/images/oddsen-full-color@3x.png)
+
+    ## Overview
+    API for fetching Oddsen sports, events and markets both for pre-live and live events.
+    >Use Stage, Prod or Mock environments to test the requests, as dev is an unstable environment.
+  contact:
+    name: team xgames
+servers:
+  - url: 'https://api.norsk-tipping.no/OddsenGameInfo/v1/api'
+    description: Prod
+  - url: 'https://api.devext.norsk-tipping.no/OddsenGameInfo/v1/api'
+    description: Stage
+  - url: 'https://api.dev.norsk-tipping.no/OddsenGameInfo/v1/api'
+    description: Dev
+paths:
+  '/events/{sportId}':
+    get:
+      summary: 'Get events, including main outright market'
+      operationId: events
+      parameters:
+        - name: sportId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ''
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Event'
+      servers:
+        - url: 'https://api.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Prod
+        - url: 'https://api.devext.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Stage
+        - url: 'https://api.dev.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Dev
+      x-stoplight:
+        id: 26jb3vz2e46wv
+      description: |-
+        Retrieve events for the given sportId. All events that start between the time of the query and 365 days (one year) ahead will be fetched.
+
+        sportId is obtained from the query GET /sportTypes
+  '/events/{sportId}/{eventDate}':
+    get:
+      summary: 'Get events for a specific date. Date format: yyyyMMdd'
+      tags: []
+      operationId: events_1
+      x-stoplight:
+        id: zduu64abge0j2
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+    parameters:
+      - schema:
+          type: string
+        name: sportId
+        in: path
+        description: e.g. "FBL"
+        required: true
+      - schema:
+          type: string
+        name: eventDate
+        in: path
+        description: 'yyyyMMdd, e.g. "20260219"'
+        required: true
+    servers:
+      - url: 'https://api.norsk-tipping.no/OddsenGameInfo/v1/api'
+        description: Prod
+      - url: 'https://api.devext.norsk-tipping.no/OddsenGameInfo/v1/api'
+        description: Stage
+      - url: 'https://api.dev.norsk-tipping.no/OddsenGameInfo/v1/api'
+        description: Dev
+  '/events/{sportId}/{fromDate}/{toDate}':
+    get:
+      summary: 'Get events for a date interval. Date format: yyyyMMddHHmm'
+      operationId: events_2
+      parameters:
+        - name: sportId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: fromDate
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: toDate
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ''
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Event'
+      servers:
+        - url: 'https://api.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Prod
+        - url: 'https://api.devext.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Stage
+        - url: 'https://api.dev.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Dev
+      x-stoplight:
+        id: xgoojl9chwz84
+      description: |-
+        Retrieve events for the given sportId. All events that start between fromDate and toDate will be fetched. 
+        Date format: yyyyMMddHHmm
+
+        NB! Time must be 0000 for fromDate and 2359 for toDate, otherwise 204 No content will be returned.
+        Example: fromDate: 202309270000, toDate: 202309272359
+  '/liveevents/{sportId}':
+    get:
+      summary: Get the current live events for sportId
+      operationId: liveEvents_1
+      parameters:
+        - name: sportId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ''
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Event'
+      servers:
+        - url: 'https://api.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Prod
+        - url: 'https://api.devext.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Stage
+        - url: 'https://api.dev.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Dev
+      x-stoplight:
+        id: opmtreiuqehes
+      description: Retrieve live events for a given sportId
+  '/livedata/{eventId}':
+    get:
+      summary: Get live data for eventId
+      operationId: liveData
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ''
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/LiveDataResponse'
+      servers:
+        - url: 'https://api.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Prod
+        - url: 'https://api.devext.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Stage
+        - url: 'https://api.dev.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Dev
+      x-stoplight:
+        id: 8fafku6yscaz2
+      description: 'Retrieve information for a live event '
+  /liveevents:
+    get:
+      summary: Get the current live events for all sports
+      operationId: liveEvents
+      responses:
+        default:
+          description: ''
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Event'
+      servers:
+        - url: 'https://api.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Prod
+        - url: 'https://api.devext.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Stage
+        - url: 'https://api.dev.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Dev
+      x-stoplight:
+        id: cmbbobprl1l5q
+      description: Retrieve live events for all sports
+  '/markets/{eventId}':
+    get:
+      summary: Get markets for eventId
+      operationId: markets
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ''
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/MarketResponse'
+      servers:
+        - url: 'https://api.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Prod
+        - url: 'https://api.devext.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Stage
+        - url: 'https://api.dev.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Dev
+      x-stoplight:
+        id: rzg565xpzdw9d
+      description: Retrieve markets for the given eventId.
+  /sportTypes:
+    get:
+      summary: 'Get sport types, including sport ID'
+      operationId: sports_1
+      responses:
+        '200':
+          description: OK
+        default:
+          description: ''
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SportType'
+      servers:
+        - url: 'https://api.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Prod
+        - url: 'https://api.devext.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Stage
+        - url: 'https://api.dev.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Dev
+      x-stoplight:
+        id: ajda4mq59y9pw
+      description: 'The endpoint can be used to retrieve the sportId as a parameter to GET /events/{sportId}'
+  /sports:
+    get:
+      summary: 'Get sport names, order and number of markets'
+      operationId: sports
+      responses:
+        default:
+          description: ''
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SportWithMarketCount'
+      servers:
+        - url: 'https://api.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Prod
+        - url: 'https://api.devext.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Stage
+        - url: 'https://api.dev.norsk-tipping.no/OddsenGameInfo/v1/api'
+          description: Dev
+      x-stoplight:
+        id: dr7h9v97bf347
+      description: 'This endpoint is primarily for internal use by Norsk Tipping. To retrieve sport types, with the corresponding 3-letter key, the endpoint GET /sportTypes must be used.'
+components:
+  schemas:
+    Event:
+      type: object
+      description: Events
+      properties:
+        eventId:
+          type: string
+          description: Unique ID of an event
+        homeParticipant:
+          type: string
+          description: Name of the home participant for the event
+        homeParticipantShortName:
+          type: string
+          description: Short name of the home participant for the event
+        awayParticipant:
+          type: string
+          description: Name of the away participant for the event
+        awayParticipantShortName:
+          type: string
+          description: Short name of the away participant for the event
+        eventName:
+          type: string
+          description: Name of the event
+        sportId:
+          type: string
+          description: The sport ID for an event eg "FBL"
+        startTime:
+          type: string
+          description: The start time for the event (Java timestamp)
+        tournament:
+          $ref: '#/components/schemas/TournamentOrCountry'
+        country:
+          $ref: '#/components/schemas/TournamentOrCountry'
+        broadcastingInfo:
+          type: array
+          description: Broadcasting information for the event
+          items:
+            type: string
+            description: Broadcasting information for the event
+        mainMarket:
+          $ref: '#/components/schemas/Market'
+      x-stoplight:
+        id: ffwh5kznrjaum
+    TournamentOrCountry:
+      type: object
+      description: Name and id of a tournament or country
+      properties:
+        id:
+          type: string
+          description: The unique id of a tournament or a country
+        name:
+          type: string
+          description: The name
+      x-stoplight:
+        id: zkiyx7ixa4088
+    Market:
+      type: object
+      description: Market
+      properties:
+        marketId:
+          type: string
+          description: Unique ID of a market
+        marketName:
+          type: string
+          description: Name of the market
+        selections:
+          type: array
+          description: List of selections
+          items:
+            $ref: '#/components/schemas/Selection'
+        marketLineType:
+          type: string
+          description: 'Market line type: MONEY, SIDE, TOTAL or null'
+        betStart:
+          type: string
+          description: Betstart date and time for the market (ISO format)
+        betStop:
+          type: string
+          description: Betstop date and time for the market (ISO format
+        live:
+          type: boolean
+      x-stoplight:
+        id: kthjwfxnwkien
+    Selection:
+      type: object
+      description: Selection
+      properties:
+        selectionId:
+          type: string
+          description: The id of the selection
+        selectionValue:
+          type: string
+          description: 'Selection value, for instance, H, D, A'
+        selectionName:
+          type: string
+          description: 'Name of the selection, for instance Liverpool'
+        selectionShortName:
+          type: string
+          description: 'The short name of the selection, for instance Liverp'
+        selectionOdds:
+          type: string
+          description: 'Odds for the selection, for instance 1.15'
+      x-stoplight:
+        id: u1yif8o7waue6
+    SportWithMarketCount:
+      type: object
+      description: Sport info with market count
+      properties:
+        sportNavigationId:
+          type: string
+          description: Navigation id for sport. Can be used for further drilldown
+        sportName:
+          type: string
+          description: Name of the sport
+        numberOfMarkets:
+          type: integer
+          description: Number of available markets for this sport
+          format: int32
+        defaultOrder:
+          type: integer
+          description: Sport order
+          format: int32
+        imageIcon:
+          type: string
+          description: Image icon name
+      x-stoplight:
+        id: 8jdxyw21u12zu
+    LiveDataResponse:
+      type: object
+      description: Response with live data for an event
+      properties:
+        eventId:
+          type: string
+          description: Unique ID of event
+        eventName:
+          type: string
+          description: Name of event
+        tsMatchTime:
+          type: string
+          description: Time stamp for the current score
+        matchTime:
+          type: string
+          description: Current match time
+        sport:
+          type: string
+          description: Sport type
+        eventStatus:
+          type: string
+          description: Status for the event
+        remainingTimeInPeriod:
+          type: string
+          description: The remaining time in the period
+        completed:
+          type: string
+          description: Completed? True or false
+        currentScore:
+          $ref: '#/components/schemas/Score'
+        matchScore:
+          $ref: '#/components/schemas/Score'
+      x-stoplight:
+        id: 7hqgcmfgdirrx
+    Score:
+      type: object
+      description: Home and away score
+      properties:
+        home:
+          type: integer
+          description: Home score
+          format: int32
+        away:
+          type: integer
+          description: Away score
+          format: int32
+      x-stoplight:
+        id: n5yryd3s63tu8
+    MarketResponse:
+      type: object
+      description: List of markets for an event
+      properties:
+        eventId:
+          type: string
+          description: Unique ID of an event
+        markets:
+          type: array
+          description: List of markets for the event
+          items:
+            $ref: '#/components/schemas/Market'
+      x-stoplight:
+        id: gm5x0mtvbfxnh
+    SportType:
+      type: object
+      description: Sport types
+      properties:
+        sportId:
+          type: string
+          description: 'Sport ID, eg. "FBL" for soccer. Used to get live events'
+        sportName:
+          type: string
+          description: Name of the sport. Eg "FOOTBALL"
+      x-stoplight:
+        id: agkgdd9rdgeqh
+x-internal: false

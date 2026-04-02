@@ -21,6 +21,12 @@ const games = [
     name: 'Euro Jackpot',
     description: '5 tall trekkes fra 1–50 + 2 stjernetall fra 1–12. Pan-europeisk jackpotlotteri hver tirsdag og fredag.',
   },
+  {
+    href: '/oddsen',
+    emoji: '⚽',
+    name: 'Oddsen',
+    description: 'Kommende kamper og live odds på fotball, ishockey, tennis og mer fra Norsk Tippings sportsbook.',
+  },
 ];
 
 const Home = () => {

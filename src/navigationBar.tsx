@@ -8,6 +8,7 @@ const navLinks = [
   { href: '/lotto', emoji: '🎰', label: 'Lotto' },
   { href: '/viking', emoji: '⚔️', label: 'Viking' },
   { href: '/euro', emoji: '💶', label: 'Euro' },
+  { href: '/oddsen', emoji: '⚽', label: 'Oddsen' },
 ];
 
 const secondaryLinks = [
