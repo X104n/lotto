@@ -471,48 +471,66 @@ html.dark body {
 
 /* === Themes === */
 
-/* === Sport tabs === */
-.sport-tabs-wrapper {
-  overflow-x: auto;
-  margin-bottom: 1.5rem;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.sport-tabs-wrapper::-webkit-scrollbar { display: none; }
-
-.sport-tabs {
-  display: flex;
-  gap: 0.5rem;
-  width: max-content;
-  min-width: 100%;
-}
-
-.sport-tab {
+/* === Sport selector (chips + dropdown) === */
+.sport-selector {
   display: flex;
   align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.sport-chips {
+  display: flex;
   gap: 0.4rem;
-  padding: 0.4rem 0.9rem;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.sport-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.8rem;
   border: 1px solid var(--border);
   border-radius: 99px;
   background: var(--white);
   color: var(--text);
-  font-size: 0.875rem;
+  font-size: 0.825rem;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s;
 }
 
-.sport-tab:hover {
+.sport-chip:hover {
   border-color: var(--accent);
   color: var(--accent);
 }
 
-.sport-tab.active {
+.sport-chip.active {
   background: var(--accent);
   border-color: var(--accent);
   color: white;
+}
+
+.sport-select {
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--text);
+  font-size: 0.825rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.sport-select:focus,
+.sport-select:hover {
+  border-color: var(--accent);
 }
 
 /* === Day tabs === */
@@ -553,10 +571,7 @@ html.dark body {
 
 /* === Tournament header === */
 .tournament-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.55rem 1.5rem;
+  padding: 0.5rem 1.25rem;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
   font-size: 0.72rem;
@@ -570,7 +585,7 @@ html.dark body {
 .event-row {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1.5rem;
+  padding: 0.7rem 1.25rem;
   gap: 0.75rem;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
@@ -590,40 +605,52 @@ html.dark body {
   font-size: 0.8rem;
   font-weight: 500;
   color: var(--text-muted);
-  min-width: 4rem;
+  width: 3.5rem;
   flex-shrink: 0;
 }
 
 .event-teams {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
 }
 
-.event-team {
+/* Single-line "Home – Away" matchup */
+.event-matchup {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.event-team-name {
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--text);
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
 }
 
-.event-team.away {
+.event-vs {
+  font-size: 0.75rem;
   color: var(--text-muted);
-  font-weight: 400;
-  margin-top: 0.1rem;
-}
-
-.live-score {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text);
-  min-width: 3rem;
-  text-align: center;
   flex-shrink: 0;
 }
 
-/* === Odds buttons === */
+.live-score {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  width: 2.75rem;
+  text-align: center;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* === Odds row === */
 .odds-row {
   display: flex;
   gap: 0.3rem;
@@ -634,11 +661,12 @@ html.dark body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 3.2rem;
-  padding: 0.3rem 0.4rem;
+  width: 3rem;
+  padding: 0.3rem 0.25rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--white);
+  overflow: hidden;
   transition: border-color 0.15s;
 }
 
@@ -647,27 +675,36 @@ html.dark body {
 }
 
 .odds-label {
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .odds-value {
-  font-size: 0.875rem;
+  font-size: 0.825rem;
   font-weight: 700;
   color: var(--text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .event-chevron {
   font-size: 0.6rem;
   color: var(--text-muted);
   flex-shrink: 0;
+  width: 0.75rem;
+  text-align: center;
 }
 
 /* === Markets panel === */
 .markets-panel {
-  padding: 1rem 1.5rem;
+  padding: 1rem 1.25rem;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
 }
@@ -678,8 +715,8 @@ html.dark body {
 
 .markets-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.6rem;
 }
 
 .market-card {
@@ -690,18 +727,20 @@ html.dark body {
 }
 
 .market-name {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-muted);
   margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .market-selections {
   display: flex;
   gap: 0.3rem;
-  flex-wrap: wrap;
 }
 
 .selection-btn {
@@ -709,28 +748,38 @@ html.dark body {
   flex-direction: column;
   align-items: center;
   flex: 1;
-  min-width: 2.5rem;
-  padding: 0.3rem 0.4rem;
+  min-width: 0;
+  padding: 0.35rem 0.25rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--bg);
+  overflow: hidden;
 }
 
-.selection-name {
-  font-size: 0.62rem;
-  color: var(--text-muted);
+.selection-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--accent);
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
+}
+
+.selection-name-text {
+  font-size: 0.6rem;
+  color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 4.5rem;
+  width: 100%;
+  text-align: center;
 }
 
 .selection-odds {
   font-size: 0.875rem;
   font-weight: 700;
   color: var(--text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 /* === Live badge === */

@@ -8,7 +8,6 @@ const BASE = 'https://api.norsk-tipping.no/OddsenGameInfo/v1/api';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-// yyyyMMddHHmm format required by the date-range endpoint
 function toApiDateTime(d: Date, endOfDay = false): string {
   const pad = (n: number) => String(n).padStart(2, '0');
   return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}${endOfDay ? '2359' : '0000'}`;
@@ -43,10 +42,16 @@ const SPORT_EMOJI: Record<string, string> = {
   DOT: '🎮', LOL: '🎮', BAD: '🏸', BSC: '⚽', FO1: '🏎', MCG: '🏍',
 };
 
-const SPORT_ORDER = ['FBL', 'HKY', 'TNS', 'HBL', 'BKB', 'VBL'];
+// Sports shown as quick-pick chips — everything else goes in the dropdown
+const POPULAR_SPORT_IDS = ['FBL', 'HKY', 'TNS', 'HBL', 'BKB', 'DAR'];
 
 function sportEmoji(id: string) { return SPORT_EMOJI[id] ?? '🏆'; }
 function capitalizeSport(s: string) { return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); }
+
+// Shorten an odds label to at most 3 chars for the compact row display
+function shortLabel(value: string): string {
+  return value.length > 3 ? value.slice(0, 3) : value;
+}
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -62,7 +67,7 @@ function LiveBadge({ time }: { time?: string }) {
 function OddsBtn({ label, value }: { label: string; value: string }) {
   return (
     <div className="odds-btn">
-      <span className="odds-label">{label}</span>
+      <span className="odds-label">{shortLabel(label)}</span>
       <span className="odds-value">{value}</span>
     </div>
   );
@@ -74,10 +79,9 @@ function MarketCard({ market }: { market: Market }) {
       <div className="market-name">{market.marketName}</div>
       <div className="market-selections">
         {market.selections.map((sel) => (
-          <div key={sel.selectionId} className="selection-btn">
-            <span className="selection-name" title={sel.selectionName}>
-              {sel.selectionShortName || sel.selectionValue}
-            </span>
+          <div key={sel.selectionId} className="selection-btn" title={sel.selectionName}>
+            <span className="selection-label">{shortLabel(sel.selectionValue)}</span>
+            <span className="selection-name-text">{sel.selectionShortName || sel.selectionName}</span>
             <span className="selection-odds">{sel.selectionOdds}</span>
           </div>
         ))}
@@ -107,14 +111,7 @@ export default function OddsenPage() {
     axios.get<{ sportTypeList: SportType[] }>(`${BASE}/sportTypes`)
       .then((res) => {
         const data = res.data?.sportTypeList ?? [];
-        data.sort((a, b) => {
-          const ai = SPORT_ORDER.indexOf(a.sportId);
-          const bi = SPORT_ORDER.indexOf(b.sportId);
-          if (ai !== -1 && bi !== -1) return ai - bi;
-          if (ai !== -1) return -1;
-          if (bi !== -1) return 1;
-          return a.sportName.localeCompare(b.sportName);
-        });
+        data.sort((a, b) => a.sportName.localeCompare(b.sportName, 'nb'));
         setSportTypes(data);
       })
       .catch(console.error);
@@ -191,6 +188,11 @@ export default function OddsenPage() {
     return Object.entries(map);
   }
 
+  const popularSports = sportTypes.filter((s) => POPULAR_SPORT_IDS.includes(s.sportId))
+    .sort((a, b) => POPULAR_SPORT_IDS.indexOf(a.sportId) - POPULAR_SPORT_IDS.indexOf(b.sportId));
+  const activeIsPopular = POPULAR_SPORT_IDS.includes(activeSport);
+  const activeSportName = sportTypes.find((s) => s.sportId === activeSport)?.sportName ?? activeSport;
+
   const currentEvents = mode === 'live' ? liveEvents : events;
   const grouped = groupByTournament(currentEvents);
 
@@ -205,20 +207,37 @@ export default function OddsenPage() {
         </p>
       </div>
 
-      {/* Sport selector */}
-      <div className="sport-tabs-wrapper">
-        <div className="sport-tabs">
-          {sportTypes.map((s) => (
+      {/* Sport selector: popular chips + dropdown for all */}
+      <div className="sport-selector">
+        <div className="sport-chips">
+          {popularSports.map((s) => (
             <button
               key={s.sportId}
-              className={`sport-tab${activeSport === s.sportId ? ' active' : ''}`}
+              className={`sport-chip${activeSport === s.sportId ? ' active' : ''}`}
               onClick={() => setActiveSport(s.sportId)}
             >
-              <span>{sportEmoji(s.sportId)}</span>
-              {capitalizeSport(s.sportName)}
+              {sportEmoji(s.sportId)} {capitalizeSport(s.sportName)}
             </button>
           ))}
+          {/* Show the active non-popular sport as a chip too */}
+          {!activeIsPopular && (
+            <span className="sport-chip active">
+              {sportEmoji(activeSport)} {capitalizeSport(activeSportName)}
+            </span>
+          )}
         </div>
+        <select
+          className="sport-select"
+          value={activeSport}
+          onChange={(e) => setActiveSport(e.target.value)}
+          aria-label="Velg idrett"
+        >
+          {sportTypes.map((s) => (
+            <option key={s.sportId} value={s.sportId}>
+              {capitalizeSport(s.sportName)}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Mode toggle */}
@@ -281,10 +300,9 @@ export default function OddsenPage() {
         grouped.map(([tournament, evts]) => (
           <div key={tournament} className="card" style={{ padding: 0, overflow: 'hidden' }}>
             <div className="tournament-header">
-              <span>{evts[0]?.country?.name && evts[0].country.name !== tournament
-                ? `${evts[0].country.name} · `
-                : ''}{tournament}
-              </span>
+              {evts[0]?.country?.name && evts[0].country.name !== tournament
+                ? `${evts[0].country.name} · ${tournament}`
+                : tournament}
             </div>
 
             {evts.map((event, i) => {
@@ -301,7 +319,7 @@ export default function OddsenPage() {
                     tabIndex={0}
                     onKeyDown={(e) => e.key === 'Enter' && handleEventClick(event.eventId)}
                   >
-                    {/* Time / live indicator */}
+                    {/* Time / live */}
                     <div className="event-time">
                       {mode === 'live' && ld
                         ? <LiveBadge time={ld.matchTime} />
@@ -311,19 +329,20 @@ export default function OddsenPage() {
                     {/* Teams */}
                     <div className="event-teams">
                       {event.homeParticipant && event.awayParticipant ? (
-                        <>
-                          <div className="event-team">{event.homeParticipant}</div>
-                          <div className="event-team away">{event.awayParticipant}</div>
-                        </>
+                        <span className="event-matchup">
+                          <span className="event-team-name">{event.homeParticipant}</span>
+                          <span className="event-vs">–</span>
+                          <span className="event-team-name">{event.awayParticipant}</span>
+                        </span>
                       ) : (
-                        <div className="event-team">{event.eventName}</div>
+                        <span className="event-team-name">{event.eventName}</span>
                       )}
                     </div>
 
                     {/* Score (live only) */}
                     {mode === 'live' && ld?.currentScore != null && (
                       <div className="live-score">
-                        {ld.currentScore.home} – {ld.currentScore.away}
+                        {ld.currentScore.home}–{ld.currentScore.away}
                       </div>
                     )}
 
