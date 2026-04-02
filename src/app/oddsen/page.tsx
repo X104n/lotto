@@ -8,16 +8,15 @@ const BASE = 'https://api.norsk-tipping.no/OddsenGameInfo/v1/api';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function toApiDate(d: Date): string {
-  return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+// yyyyMMddHHmm format required by the date-range endpoint
+function toApiDateTime(d: Date, endOfDay = false): string {
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}${endOfDay ? '2359' : '0000'}`;
 }
 
-function formatTime(timestamp: string): string {
+function formatTime(iso: string): string {
   try {
-    return new Date(Number(timestamp)).toLocaleTimeString('nb-NO', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    return new Date(iso).toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' });
   } catch {
     return '';
   }
@@ -38,12 +37,13 @@ function formatDayTitle(offset: number): string {
 }
 
 const SPORT_EMOJI: Record<string, string> = {
-  FBL: '⚽', ICE: '🏒', TEN: '🎾', BAS: '🏀', HAN: '🤾', VOL: '🏐',
-  AMFOOTBALL: '🏈', GOLF: '⛳', CYC: '🚴', DARTS: '🎯', BOX: '🥊',
-  MMA: '🥋', RUGBY: '🏉', BASEBALL: '⚾', SNOOKER: '🎱',
+  FBL: '⚽', HKY: '🏒', TNS: '🎾', BKB: '🏀', HBL: '🤾', VBL: '🏐',
+  UFB: '🏈', GLF: '⛳', CYC: '🚴', DAR: '🎯', BOX: '🥊', RBL: '🏉',
+  RBU: '🏉', BSB: '⚾', SNK: '🎱', TBT: '🏓', MSP: '🏎', CST: '🎮',
+  DOT: '🎮', LOL: '🎮', BAD: '🏸', BSC: '⚽', FO1: '🏎', MCG: '🏍',
 };
 
-const SPORT_ORDER = ['FBL', 'ICE', 'TEN', 'HAN', 'BAS', 'VOL'];
+const SPORT_ORDER = ['FBL', 'HKY', 'TNS', 'HBL', 'BKB', 'VBL'];
 
 function sportEmoji(id: string) { return SPORT_EMOJI[id] ?? '🏆'; }
 function capitalizeSport(s: string) { return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); }
@@ -104,9 +104,9 @@ export default function OddsenPage() {
 
   // Load sport types once
   useEffect(() => {
-    axios.get<SportType[]>(`${BASE}/sportTypes`)
+    axios.get<{ sportTypeList: SportType[] }>(`${BASE}/sportTypes`)
       .then((res) => {
-        const data = Array.isArray(res.data) ? res.data : [];
+        const data = res.data?.sportTypeList ?? [];
         data.sort((a, b) => {
           const ai = SPORT_ORDER.indexOf(a.sportId);
           const bi = SPORT_ORDER.indexOf(b.sportId);
@@ -122,8 +122,8 @@ export default function OddsenPage() {
 
   // Refresh live count whenever active sport changes
   useEffect(() => {
-    axios.get<OddsenEvent[]>(`${BASE}/liveevents/${activeSport}`)
-      .then((res) => setLiveCount(Array.isArray(res.data) ? res.data.length : 0))
+    axios.get<{ eventList: OddsenEvent[] }>(`${BASE}/liveevents/${activeSport}`)
+      .then((res) => setLiveCount(res.data?.eventList?.length ?? 0))
       .catch(() => setLiveCount(0));
   }, [activeSport]);
 
@@ -136,14 +136,16 @@ export default function OddsenPage() {
     if (mode === 'upcoming') {
       const d = new Date();
       d.setDate(d.getDate() + dayOffset);
-      axios.get<OddsenEvent[]>(`${BASE}/events/${activeSport}/${toApiDate(d)}`)
-        .then((res) => setEvents(Array.isArray(res.data) ? res.data : []))
+      const from = toApiDateTime(d, false);
+      const to = toApiDateTime(d, true);
+      axios.get<{ eventList: OddsenEvent[] }>(`${BASE}/events/${activeSport}/${from}/${to}`)
+        .then((res) => setEvents(res.data?.eventList ?? []))
         .catch(() => setEvents([]))
         .finally(() => setLoading(false));
     } else {
-      axios.get<OddsenEvent[]>(`${BASE}/liveevents/${activeSport}`)
+      axios.get<{ eventList: OddsenEvent[] }>(`${BASE}/liveevents/${activeSport}`)
         .then(async (res) => {
-          const evts: OddsenEvent[] = Array.isArray(res.data) ? res.data : [];
+          const evts: OddsenEvent[] = res.data?.eventList ?? [];
           setLiveEvents(evts);
           setLiveCount(evts.length);
           const map: Record<string, LiveData> = {};
