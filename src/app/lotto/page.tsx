@@ -74,7 +74,7 @@ const Lotto = () => {
   const loading = progress !== null;
 
   return (
-    <>
+    <div className="theme-lotto">
       <div className="card">
         <h1>Lotto 🎰</h1>
         <p>
@@ -170,7 +170,7 @@ const Lotto = () => {
           <p style={{ color: 'var(--text-muted)' }}>Velg en periode ovenfor for å laste inn statistikk.</p>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

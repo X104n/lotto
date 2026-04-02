@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const navLinks = [
   { href: '/lotto', emoji: '🎰', label: 'Lotto' },
@@ -16,6 +16,18 @@ const secondaryLinks = [
 
 function Navbar() {
   const pathname = usePathname();
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    setDark(document.documentElement.classList.contains('dark'));
+  }, []);
+
+  function toggleDark() {
+    const next = !dark;
+    setDark(next);
+    document.documentElement.classList.toggle('dark', next);
+    try { localStorage.setItem('theme', next ? 'dark' : 'light'); } catch (e) {}
+  }
 
   useEffect(() => {
     function handleScroll() {
@@ -52,6 +64,11 @@ function Navbar() {
             </Link>
           </li>
         ))}
+        <li>
+          <button className="dark-toggle" onClick={toggleDark} aria-label="Toggle dark mode">
+            {dark ? '☀︎' : '☽'}
+          </button>
+        </li>
       </ul>
     </nav>
   );

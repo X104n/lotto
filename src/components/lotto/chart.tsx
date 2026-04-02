@@ -52,23 +52,24 @@ export function countAllNumbers(data: DrawResult[]): number[] {
 
 // ── chart component ───────────────────────────────────────────────────────────
 
-function barColors(counts: number[]): string[] {
+function barColors(counts: number[], colorRgb: string): string[] {
   const max = Math.max(...counts);
   const min = Math.min(...counts);
   const range = max - min || 1;
   return counts.map((c) => {
     const alpha = 0.15 + ((c - min) / range) * 0.85;
-    return `rgba(212, 16, 64, ${alpha.toFixed(2)})`;
+    return `rgba(${colorRgb}, ${alpha.toFixed(2)})`;
   });
 }
 
 interface FrequencyChartProps {
   counts: number[];
   tooltipLabel?: string;
+  colorRgb?: string;
 }
 
-export function FrequencyChart({ counts, tooltipLabel = 'Trukket' }: FrequencyChartProps) {
-  const colors = barColors(counts);
+export function FrequencyChart({ counts, tooltipLabel = 'Trukket', colorRgb = '212, 16, 64' }: FrequencyChartProps) {
+  const colors = barColors(counts, colorRgb);
 
   const chartData = {
     labels: Array.from({ length: counts.length }, (_, i) => i + 1),

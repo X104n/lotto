@@ -141,14 +141,14 @@ function FrequencyCharts({ data }: Props) {
         <p style={{ fontSize: '0.8rem', marginBottom: '0.75rem' }}>
           5 tall trekkes per runde. Alle premienivåer fra «5+2» ned til «2+1» krever minst ett riktig hovedtall.
         </p>
-        <FrequencyChart counts={mainCounts} tooltipLabel="Trukket som hovedtall" />
+        <FrequencyChart counts={mainCounts} tooltipLabel="Trukket som hovedtall" colorRgb="201, 162, 39" />
       </div>
       <div className="card">
         <SectionTitle>Stjernetall (1–12)</SectionTitle>
         <p style={{ fontSize: '0.8rem', marginBottom: '0.75rem' }}>
           2 stjernetall trekkes per runde fra 1–12. Begge er nødvendige for jackpot (5+2).
         </p>
-        <FrequencyChart counts={starCounts} tooltipLabel="Trukket som stjernetall" />
+        <FrequencyChart counts={starCounts} tooltipLabel="Trukket som stjernetall" colorRgb="201, 162, 39" />
       </div>
     </>
   );
@@ -246,7 +246,7 @@ function StarNumberTable({ data }: Props) {
                 style={{
                   height: '100%',
                   width: `${(count / maxCount) * 100}%`,
-                  background: rank === 1 ? 'var(--red)' : 'rgba(212,16,64,0.4)',
+                  background: rank === 1 ? 'var(--accent)' : 'rgba(var(--accent-rgb), 0.35)',
                   borderRadius: 99,
                   transition: 'width 0.4s ease',
                 }}
@@ -344,7 +344,7 @@ function NorwegianWinners({ data }: Props) {
                 style={{
                   height: '100%',
                   width: `${(count / maxCount) * 100}%`,
-                  background: i === 0 ? 'var(--red)' : 'rgba(212,16,64,0.4)',
+                  background: i === 0 ? 'var(--accent)' : 'rgba(var(--accent-rgb), 0.35)',
                   borderRadius: 99,
                   transition: 'width 0.4s ease',
                 }}

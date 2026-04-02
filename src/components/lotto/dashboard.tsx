@@ -250,7 +250,7 @@ function CountyStats({ data }: Props) {
                 style={{
                   height: '100%',
                   width: `${(count / maxCount) * 100}%`,
-                  background: i === 0 ? 'var(--red)' : 'rgba(212,16,64,0.4)',
+                  background: i === 0 ? 'var(--accent)' : 'rgba(var(--accent-rgb), 0.35)',
                   borderRadius: 99,
                   transition: 'width 0.4s ease',
                 }}

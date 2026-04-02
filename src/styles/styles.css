@@ -3,6 +3,13 @@
   --red: #d41040;
   --red-dark: #a50d30;
   --red-light: #fde8ed;
+
+  /* Accent — overridden per theme */
+  --accent: #d41040;
+  --accent-dark: #a50d30;
+  --accent-light: #fde8ed;
+  --accent-rgb: 212, 16, 64;
+
   --bg: #f4f4f5;
   --white: #ffffff;
   --text: #1a1a1a;
@@ -133,12 +140,12 @@ p {
 }
 
 .btn-primary {
-  background-color: var(--red);
+  background-color: var(--accent);
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: var(--red-dark);
+  background-color: var(--accent-dark);
 }
 
 .btn-primary:active {
@@ -158,14 +165,14 @@ p {
 }
 
 .btn-tab:hover {
-  border-color: var(--red);
-  color: var(--red);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .btn-tab.active {
-  background-color: var(--red);
+  background-color: var(--accent);
   color: white;
-  border-color: var(--red);
+  border-color: var(--accent);
 }
 
 /* === Tab bar === */
@@ -210,7 +217,7 @@ input[type='date'] {
 }
 
 input[type='date']:focus {
-  border-color: var(--red);
+  border-color: var(--accent);
 }
 
 /* === Range slider === */
@@ -245,7 +252,7 @@ input[type='range']::-webkit-slider-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: var(--red);
+  background: var(--accent);
   cursor: pointer;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
@@ -254,7 +261,7 @@ input[type='range']::-moz-range-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: var(--red);
+  background: var(--accent);
   cursor: pointer;
   border: none;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
@@ -296,7 +303,7 @@ input[type='range']::-moz-range-thumb {
 }
 
 .stat-card-value.highlight {
-  color: var(--red);
+  color: var(--accent);
 }
 
 /* === Section title === */
@@ -404,7 +411,7 @@ input[type='range']::-moz-range-thumb {
 
 .fetch-progress-bar-fill {
   height: 100%;
-  background: var(--red);
+  background: var(--accent);
   border-radius: 99px;
   transition: width 0.4s ease;
 }
@@ -427,4 +434,125 @@ input[type='range']::-moz-range-thumb {
   font-size: 3rem;
   display: block;
   margin-bottom: 1rem;
+}
+
+/* === Dark mode toggle button === */
+.dark-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.35rem 0.6rem;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--text);
+  line-height: 1;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.dark-toggle:hover {
+  background: var(--bg);
+}
+
+/* === Dark mode === */
+html.dark {
+  --bg: #111111;
+  --white: #1c1c1e;
+  --text: #f0f0f0;
+  --text-muted: #9ca3af;
+  --border: #2d2d2d;
+  --red-light: rgba(212, 16, 64, 0.15);
+  --shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+html.dark body {
+  background-color: var(--bg);
+}
+
+/* === Themes === */
+
+/* Lotto: red (matches :root defaults) */
+.theme-lotto {
+  --accent: #d41040;
+  --accent-dark: #a50d30;
+  --accent-light: #fde8ed;
+  --accent-rgb: 212, 16, 64;
+}
+
+/* Viking Lotto: blue */
+.theme-viking {
+  --accent: #1a6fd4;
+  --accent-dark: #1354a8;
+  --accent-light: #e0edfc;
+  --accent-rgb: 26, 111, 212;
+}
+
+/* Euro Jackpot: dark with gold */
+.theme-euro {
+  --accent: #c9a227;
+  --accent-dark: #a07e12;
+  --accent-light: rgba(201, 162, 39, 0.15);
+  --accent-rgb: 201, 162, 39;
+}
+
+.theme-euro .card,
+.theme-euro .stat-card {
+  background: #1c1c1e;
+  color: #f0f0f0;
+}
+
+.theme-euro h1,
+.theme-euro h2,
+.theme-euro h3,
+.theme-euro .stat-card-value,
+.theme-euro .section-title,
+.theme-euro .data-table td,
+.theme-euro .fetch-progress-label {
+  color: #f0f0f0;
+}
+
+.theme-euro p,
+.theme-euro .stat-card-label,
+.theme-euro .data-table th,
+.theme-euro .fetch-progress-count,
+.theme-euro .fetch-progress-dates {
+  color: #9ca3af;
+}
+
+.theme-euro .data-table td {
+  border-bottom-color: #2d2d2d;
+}
+
+.theme-euro .data-table th {
+  border-bottom-color: #2d2d2d;
+}
+
+.theme-euro .data-table tbody tr:hover td {
+  background: #252525;
+}
+
+.theme-euro .fetch-progress-bar-track {
+  background: #333;
+}
+
+.theme-euro .btn-tab {
+  background: #1c1c1e;
+  color: #d0d0d0;
+  border-color: #3a3a3a;
+}
+
+.theme-euro .btn-tab:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.theme-euro input[type='date'] {
+  background: #1c1c1e;
+  color: #f0f0f0;
+  border-color: #3a3a3a;
+}
+
+.theme-euro .rank-badge {
+  background: #3a3a3a;
+  color: #ccc;
 }

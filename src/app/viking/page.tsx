@@ -74,7 +74,7 @@ const Viking = () => {
   const loading = progress !== null;
 
   return (
-    <>
+    <div className="theme-viking">
       <div className="card">
         <h1>Viking Lotto ⚔️</h1>
         <p>
@@ -171,7 +171,7 @@ const Viking = () => {
           <p style={{ color: 'var(--text-muted)' }}>Velg en periode ovenfor for å laste inn statistikk.</p>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

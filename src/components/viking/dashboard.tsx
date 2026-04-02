@@ -128,14 +128,14 @@ function FrequencyCharts({ data }: Props) {
         <p style={{ fontSize: '0.8rem', marginBottom: '0.75rem' }}>
           6 tall trekkes per runde. Brukes til jackpot (6+1) og de øvrige premienivåene.
         </p>
-        <FrequencyChart counts={mainCounts} tooltipLabel="Trukket som hovedtall" />
+        <FrequencyChart counts={mainCounts} tooltipLabel="Trukket som hovedtall" colorRgb="26, 111, 212" />
       </div>
       <div className="card">
         <SectionTitle>Vikingtall (1–5)</SectionTitle>
         <p style={{ fontSize: '0.8rem', marginBottom: '0.75rem' }}>
           1 tall trekkes per runde fra 1–5. Nødvendig for jackpot (6+1), men kan ikke vinne jackpoten alene.
         </p>
-        <FrequencyChart counts={vikingCounts} tooltipLabel="Trukket som vikingtall" />
+        <FrequencyChart counts={vikingCounts} tooltipLabel="Trukket som vikingtall" colorRgb="26, 111, 212" />
       </div>
     </>
   );

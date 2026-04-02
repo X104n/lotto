@@ -74,7 +74,7 @@ const Euro = () => {
   const loading = progress !== null;
 
   return (
-    <>
+    <div className="theme-euro">
       <div className="card">
         <h1>Euro Jackpot 💶</h1>
         <p>
@@ -171,7 +171,7 @@ const Euro = () => {
           <p style={{ color: 'var(--text-muted)' }}>Velg en periode ovenfor for å laste inn statistikk.</p>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
