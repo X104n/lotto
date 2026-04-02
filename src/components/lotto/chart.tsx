@@ -16,7 +16,7 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip);
 export function countMainNumbers(data: DrawResult[]): number[] {
   const counts = new Array<number>(34).fill(0);
   for (const draw of data) {
-    for (const { number, type } of draw.winnerNumber) {
+    for (const { number, type } of (draw.winnerNumber ?? [])) {
       if (type === 1) {
         const n = Number(number);
         if (n >= 1 && n <= 34) counts[n - 1]++;
@@ -29,7 +29,7 @@ export function countMainNumbers(data: DrawResult[]): number[] {
 export function countBonusNumbers(data: DrawResult[]): number[] {
   const counts = new Array<number>(34).fill(0);
   for (const draw of data) {
-    for (const { number, type } of draw.winnerNumber) {
+    for (const { number, type } of (draw.winnerNumber ?? [])) {
       if (type === 2) {
         const n = Number(number);
         if (n >= 1 && n <= 34) counts[n - 1]++;
@@ -42,7 +42,7 @@ export function countBonusNumbers(data: DrawResult[]): number[] {
 export function countAllNumbers(data: DrawResult[]): number[] {
   const counts = new Array<number>(34).fill(0);
   for (const draw of data) {
-    for (const { number } of draw.winnerNumber) {
+    for (const { number } of (draw.winnerNumber ?? [])) {
       const n = Number(number);
       if (n >= 1 && n <= 34) counts[n - 1]++;
     }

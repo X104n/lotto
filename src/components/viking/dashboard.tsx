@@ -23,7 +23,7 @@ function formatDate(iso: string): string {
 function countMainNumbers(data: DrawResult[]): number[] {
   const counts = new Array<number>(48).fill(0);
   for (const draw of data) {
-    for (const { number, type } of draw.winnerNumber) {
+    for (const { number, type } of (draw.winnerNumber ?? [])) {
       if (type === 1) {
         const n = Number(number);
         if (n >= 1 && n <= 48) counts[n - 1]++;
@@ -37,7 +37,7 @@ function countMainNumbers(data: DrawResult[]): number[] {
 function countVikingNumbers(data: DrawResult[]): number[] {
   const counts = new Array<number>(5).fill(0);
   for (const draw of data) {
-    for (const { number, type } of draw.winnerNumber) {
+    for (const { number, type } of (draw.winnerNumber ?? [])) {
       if (type === 2) {
         const n = Number(number);
         if (n >= 1 && n <= 5) counts[n - 1]++;
@@ -202,7 +202,7 @@ function PrizeStats({ data }: Props) {
   const agg: Record<string, { winners: number; totalValue: number }> = {};
 
   for (const draw of data) {
-    for (const prize of draw.prize) {
+    for (const prize of (draw.prize ?? [])) {
       if (!agg[prize.name]) agg[prize.name] = { winners: 0, totalValue: 0 };
       const w = parseInt(prize.winners);
       const v = parseInt(prize.value);

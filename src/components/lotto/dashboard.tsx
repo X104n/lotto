@@ -177,7 +177,7 @@ function PrizeStats({ data }: Props) {
   const agg: Record<string, { winners: number; totalValue: number }> = {};
 
   for (const draw of data) {
-    for (const prize of draw.prize) {
+    for (const prize of (draw.prize ?? [])) {
       if (!agg[prize.name]) agg[prize.name] = { winners: 0, totalValue: 0 };
       const w = parseInt(prize.winners);
       const v = parseInt(prize.value);
@@ -223,7 +223,7 @@ function PrizeStats({ data }: Props) {
 function CountyStats({ data }: Props) {
   const counts: Record<string, number> = {};
   for (const draw of data) {
-    for (const { county } of draw.weekWinnerDetail) {
+    for (const { county } of (draw.weekWinnerDetail ?? [])) {
       if (county) counts[county] = (counts[county] || 0) + 1;
     }
   }

@@ -49,7 +49,8 @@ function sportEmoji(id: string) { return SPORT_EMOJI[id] ?? '🏆'; }
 function capitalizeSport(s: string) { return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); }
 
 // Shorten an odds label to at most 3 chars for the compact row display
-function shortLabel(value: string): string {
+function shortLabel(value: string | undefined): string {
+  if (!value) return '';
   return value.length > 3 ? value.slice(0, 3) : value;
 }
 
